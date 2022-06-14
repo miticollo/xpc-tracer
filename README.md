@@ -24,6 +24,17 @@ $ npm install                                                 # nodejs required
 $ pip install frida-tools
 $ frida -U -f ph.telegra.Telegraph --no-pause -l _agent.js    # target app: Telegram
 ```
+### Patch IPA
+To use agent, target application **must** be able to execute system call `system(2)`.
+So you **must** patch IPA.
+1. Dump `enitlements.plist` using `ldid -e ${APP_PATH}`
+2. Append
+    ```xml
+    <key>com.apple.private.security.no-container</key>
+    <true/>
+    ```
+   to `enitlements.plist`.
+3. Signing application with `ldid -Senitlements.plist ${APP_PATH}`
 
 ## Example of Output
 ```text
