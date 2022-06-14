@@ -11,6 +11,9 @@ As you will notice I print arguments in-depth including parsed bplist00, bplist1
 
 This is a PoC for [AnForA](https://people.unipmn.it/sguazt/publication/anglano-2019-anfora/Anglano-2019-AnForA.pdf).
 
+## Requirements
+* A **jailbroken** iDevice
+
 ## Quick-start guide
 I prefer using frida inside [Python virtual environment (venv)](https://docs.python.org/3/library/venv.html).
 
