@@ -28,6 +28,10 @@ $ pip install frida-tools
 $ frida -U -f ph.telegra.Telegraph --no-pause -l _agent.js    # target app: Telegram
 ```
 ### Patch IPA
+
+> **Warning**</br>
+> It doesn't work on iOS 16.3.1. I only tested iOS 12.5.5
+
 To use agent, target application **must** be able to execute system call `system(2)`.
 So you **must** patch IPA.
 1. Dump `enitlements.plist` using `ldid -e ${APP_PATH}`
@@ -38,6 +42,12 @@ So you **must** patch IPA.
     ```
    to `enitlements.plist`.
 3. Signing application with `ldid -Senitlements.plist ${APP_PATH}`
+
+> **Note**</br>
+> <span><!-- https://www.reddit.com/r/jailbreakdevelopers/comments/l37ytr/comment/gkbexv2/?utm_source=share&utm_medium=web2x&context=3 --></span>
+> On iOS stock is not possible to sideload an app with this enitlement.
+> Because it is not possible to retrieve a valid provisioning file.
+> Sideloadly fixes up enitlements to use sandbox.
 
 ## Example of Output
 ```text
