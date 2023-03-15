@@ -30,7 +30,7 @@ $ frida -U -f ph.telegra.Telegraph --no-pause -l _agent.js    # target app: Tele
 ### Patch IPA
 
 > **Warning**</br>
-> It doesn't work on iOS 16.3.1. I only tested iOS 12.5.5
+> It doesn't work on iOS 16.3.1. I only tested it with success on iOS 12.5.5.
 
 To use agent, target application **must** be able to execute system call `system(2)`.
 So you **must** patch IPA.
