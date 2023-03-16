@@ -47,7 +47,8 @@ So you **must** patch IPA.
 > <span><!-- https://www.reddit.com/r/jailbreakdevelopers/comments/l37ytr/comment/gkbexv2/?utm_source=share&utm_medium=web2x&context=3 --></span>
 > On iOS stock is not possible to sideload an app with this enitlement.
 > Because it is not possible to retrieve a valid provisioning file.
-> Sideloadly fixes up enitlements to use sandbox.
+> Sideloadly fixes up enitlements to use sandbox.<br/>
+> Furthermore in the provisioning file **must be** present the iDevice where you want to sideload otherwise `installd` fails.
 
 ## Example of Output
 ```text
