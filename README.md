@@ -2,12 +2,9 @@
 A tracer based on [frida](https://frida.re/) for XPC messages in iOS and macOS.
 
 This project is a variant of [xpcspy](https://github.com/hot3eed/xpcspy).
-In particular for my purpose I didn't develop a Python script with options to filter messages based on direction 
-(incoming/outgoing).
-Anyway I created an agent to hook some `xpc_connection_send_message` functions and print their arguments in the best way 
-possible.
-As you will notice I print arguments in-depth including parsed bplist00, bplist15, bplist16 and bplist17 using 
-[jlutil](http://newosxbook.com/tools/simplistic.html).
+However, for my purposes, I did not develop a Python script with options to filter messages based on direction (incoming/outgoing). 
+Instead, I created an agent to hook some `xpc_connection_send_message` functions and print their arguments in the best way possible.
+You will notice that I print arguments in-depth, including parsed `bplist00`, `bplist15`, `bplist16`, and `bplist17`, using [jlutil](http://newosxbook.com/tools/simplistic.html).
 
 This is a PoC for [AnForA](https://people.unipmn.it/sguazt/publication/anglano-2019-anfora/Anglano-2019-AnForA.pdf).
 
