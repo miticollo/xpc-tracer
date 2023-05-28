@@ -1,9 +1,8 @@
-import {XpcObject} from "../xpcObject";
+import {XpcObject} from "../xpcObject.js";
 
 export class XpcDate extends XpcObject {
     public static readonly xpc_date_get_value = new NativeFunction(
-        Module.getExportByName(null, "xpc_date_get_value"),
-        "int64", ["pointer"]
+        Module.getExportByName(null, "xpc_date_get_value"), "int64", ["pointer"]
     )
 
     getRawData(): Int64 {

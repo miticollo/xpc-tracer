@@ -1,71 +1,63 @@
-import { XpcString } from '../string/xpcString'
-import { XpcInt64 } from '../number/XpcInt64'
-import { XpcUint64 } from '../number/xpcUint64'
-import { XpcDouble } from '../number/xpcDouble'
-import { XpcBool } from '../boolean/xpcBool'
-import { XpcData } from '../data/xpcData'
-import {XpcObject} from "../xpcObject";
-import {XpcNull} from "../null/xpcNull";
-import {XpcDate} from "../date/xpcDate";
-import {XpcFd} from "../fd/xpcFd";
-import {XpcArray} from "../array/xpcArray";
-import {XpcUnknown} from "../xpcUnknown";
-import {XpcMachSend} from "../mach/xpcMachSend";
-import {XpcEndpoint} from "../endpoint/xpcEndpoint";
+import { XpcString } from "../string/xpcString.js";
+import { XpcInt64 } from "../number/XpcInt64.js";
+import { XpcUint64 } from "../number/xpcUint64.js";
+import { XpcDouble } from "../number/xpcDouble.js";
+import { XpcBool } from "../boolean/xpcBool.js";
+import { XpcData } from "../data/xpcData.js";
+import {XpcObject} from "../xpcObject.js";
+import {XpcNull} from "../null/xpcNull.js";
+import {XpcDate} from "../date/xpcDate.js";
+import {XpcFd} from "../fd/xpcFd.js";
+import {XpcArray} from "../array/xpcArray.js";
+import {XpcUnknown} from "../xpcUnknown.js";
+import {XpcMachSend} from "../mach/xpcMachSend.js";
+import {XpcEndpoint} from "../endpoint/xpcEndpoint.js";
 
 export class XpcDictionary extends XpcObject {
     public static readonly xpc_dictionary_apply = new NativeFunction(
-        Module.getExportByName(null, "xpc_dictionary_apply"),
-        "bool", ["pointer", "pointer"]
+        Module.getExportByName(null, "xpc_dictionary_apply"), "bool", ["pointer", "pointer"]
     )
 
     public static readonly xpc_dictionary_create = new NativeFunction(
-        Module.getExportByName(null, "xpc_dictionary_create"),
-        "pointer", ["pointer", "pointer", "int32"]
+        Module.getExportByName(null, "xpc_dictionary_create"), "pointer", ["pointer", "pointer", "int32"]
     )
 
     public static readonly xpc_dictionary_set_uint64 = new NativeFunction(
-        Module.getExportByName(null, "xpc_dictionary_set_uint64"),
-        "void", ["pointer", "pointer", "uint64"]
+        Module.getExportByName(null, "xpc_dictionary_set_uint64"), "void", ["pointer", "pointer", "uint64"]
     )
 
     public static readonly xpc_dictionary_set_string = new NativeFunction(
-        Module.getExportByName(null, "xpc_dictionary_set_string"),
-        "void", ["pointer", "pointer", "pointer"]
+        Module.getExportByName(null, "xpc_dictionary_set_string"), "void", ["pointer", "pointer", "pointer"]
     )
 
     public static readonly xpc_dictionary_set_fd = new NativeFunction(
-        Module.getExportByName(null, "xpc_dictionary_set_fd"),
-        "void", ["pointer", "pointer", "int"]
+        Module.getExportByName(null, "xpc_dictionary_set_fd"), "void", ["pointer", "pointer", "int"]
     )
 
     public static readonly xpc_dictionary_get_int64 = new NativeFunction(
-        Module.getExportByName(null, "xpc_dictionary_get_int64"),
-        "int64", ["pointer"]
+        Module.getExportByName(null, "xpc_dictionary_get_int64"), "int64", ["pointer"]
     )
 
     public static readonly xpc_dictionary_set_mach_send = new NativeFunction(
-        Module.getExportByName(null, "xpc_dictionary_set_mach_send"),
-        "void", ["pointer", "pointer", "int"]
+        Module.getExportByName(null, "xpc_dictionary_set_mach_send"), "void", ["pointer", "pointer", "int"]
     )
 
     public static readonly xpc_dictionary_set_bool = new NativeFunction(
-        Module.getExportByName(null, "xpc_dictionary_set_bool"),
-        "void", ["pointer", "pointer", "bool"]
+        Module.getExportByName(null, "xpc_dictionary_set_bool"), "void", ["pointer", "pointer", "bool"]
     )
 
     private static iterate(xpcDictPtr: NativePointer): { [key: string]: XpcObject; } {
-        let map: { [key: string]: XpcObject; } = {}
+        let map: { [key: string]: XpcObject; } = {};
 
         const handler = new ObjC.Block({
             retType: "bool",
             argTypes: ["pointer", "pointer"],
             implementation: function (key: NativePointer, value: NativePointer): boolean {
-                const valueType = new ObjC.Object(value).$className
+                const valueType: string = new ObjC.Object(value).$className;
                 if (key.readCString() == null)
-                    throw Error("String at " + key.toString() + "is null")
+                    throw Error("String at " + key.toString() + "is null");
                 // @ts-ignore
-                const keyStr = key.readCString().toString()
+                const keyStr: string = key.readCString().toString();
                 switch (valueType) {
                     case "OS_xpc_string":
                         map[keyStr] = new XpcString(value);
@@ -114,36 +106,35 @@ export class XpcDictionary extends XpcObject {
             }
         })
 
-        XpcDictionary.xpc_dictionary_apply(xpcDictPtr, handler)
+        XpcDictionary.xpc_dictionary_apply(xpcDictPtr, handler);
 
-        return map
+        return map;
     }
 
     public getRawData(): { [key: string]: XpcObject; } {
-        return XpcDictionary.iterate(this.pointer)
+        return XpcDictionary.iterate(this.pointer);
     }
 
     public formatDictionary(depth: number): string {
-        let str: string = "{\n"
-        const map = this.getRawData()
-        const indent: string = "\t"
-        const length = Object.keys(map).length
-        let i = 1
+        let str: string = "{\n";
+        const map: { [key: string]: XpcObject; } = this.getRawData();
+        const indent: string = "\t";
+        const length: number = Object.keys(map).length;
+        let i: number = 1;
         for (let key in map) {
-            let obj: XpcObject = map[key]
-            str += `${indent.repeat(depth)}${key}: ${obj.getType()} = `
-            if (key === 'error') str += `${this.printError(map[key] as XpcInt64)}`
+            let obj: XpcObject = map[key];
+            str += `${indent.repeat(depth)}${key}: ${obj.getType()} = `;
+            if (key === 'error') str += `${this.printError(map[key] as XpcInt64)}`;
             else {
-                if (obj instanceof XpcDictionary) str += obj.formatDictionary(depth + 1)
-                else if (obj instanceof XpcData) str += obj.formatData(depth + 1)
-                else if (obj instanceof XpcArray) str += obj.formatArray(depth + 1)
-                else str += `${map[key].toString()}`
-                if (i++ < length) str += ","
+                if (obj instanceof XpcDictionary) str += obj.formatDictionary(depth + 1);
+                else if (obj instanceof XpcData) str += obj.formatData(depth + 1);
+                else if (obj instanceof XpcArray) str += obj.formatArray(depth + 1);
+                else str += `${map[key].toString()}`;
+                if (i++ < length) str += ",";
             }
-            str += "\n"
+            str += "\n";
         }
-        str += `${indent.repeat(depth - 1)}}`
-        return str
+        str += `${indent.repeat(depth - 1)}}`;
+        return str;
     }
 }
-

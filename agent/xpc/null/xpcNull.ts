@@ -1,4 +1,4 @@
-import {XpcObject} from "../xpcObject";
+import {XpcObject} from "../xpcObject.js";
 
 export class XpcNull extends XpcObject{
     public getRawData(): null {

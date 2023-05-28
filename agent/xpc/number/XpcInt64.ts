@@ -1,9 +1,8 @@
-import {XpcObject} from "../xpcObject";
+import {XpcObject} from "../xpcObject.js";
 
 export class XpcInt64 extends XpcObject{
     public static readonly xpc_int64_get_value = new NativeFunction(
-        Module.getExportByName(null, "xpc_int64_get_value"),
-        "int64", ["pointer"]
+        Module.getExportByName(null, "xpc_int64_get_value"), "int64", ["pointer"]
     )
 
     public getRawData(): Int64 {

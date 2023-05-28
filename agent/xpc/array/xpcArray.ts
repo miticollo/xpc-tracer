@@ -1,32 +1,31 @@
-import { XpcString } from '../string/xpcString'
-import { XpcInt64 } from '../number/XpcInt64'
-import { XpcUint64 } from '../number/xpcUint64'
-import { XpcDouble } from '../number/xpcDouble'
-import { XpcBool } from '../boolean/xpcBool'
-import { XpcData } from '../data/xpcData'
-import {XpcObject} from "../xpcObject";
-import {XpcNull} from "../null/xpcNull";
-import {XpcDate} from "../date/xpcDate";
-import {XpcFd} from "../fd/xpcFd";
-import {XpcDictionary} from "../dictionary/xpcDictionary";
-import {XpcUnknown} from "../xpcUnknown";
-import {XpcMachSend} from "../mach/xpcMachSend";
-import {XpcEndpoint} from "../endpoint/xpcEndpoint";
+import { XpcString } from "../string/xpcString.js";
+import { XpcInt64 } from "../number/XpcInt64.js";
+import { XpcUint64 } from "../number/xpcUint64.js";
+import { XpcDouble } from "../number/xpcDouble.js";
+import { XpcBool } from "../boolean/xpcBool.js";
+import { XpcData } from "../data/xpcData.js";
+import {XpcObject} from "../xpcObject.js";
+import {XpcNull} from "../null/xpcNull.js";
+import {XpcDate} from "../date/xpcDate.js";
+import {XpcFd} from "../fd/xpcFd.js";
+import {XpcDictionary} from "../dictionary/xpcDictionary.js";
+import {XpcUnknown} from "../xpcUnknown.js";
+import {XpcMachSend} from "../mach/xpcMachSend.js";
+import {XpcEndpoint} from "../endpoint/xpcEndpoint.js";
 
 export class XpcArray extends XpcObject {
     public static readonly xpc_array_apply = new NativeFunction(
-        Module.getExportByName(null, "xpc_array_apply"),
-        "bool", ["pointer", "pointer"]
+        Module.getExportByName(null, "xpc_array_apply"), "bool", ["pointer", "pointer"]
     )
 
     private static iterate(xpcArrayPtr: NativePointer): XpcObject[] {
-        let array: XpcObject[] = []
+        let array: XpcObject[] = [];
         
         const handler = new ObjC.Block({
             retType: "bool",
             argTypes: ["pointer", "pointer"],
             implementation: function (index: number, value: NativePointer): boolean {
-                const valueType = new ObjC.Object(value).$className
+                const valueType: string = new ObjC.Object(value).$className;
                 switch (valueType) {
                     case "OS_xpc_string":
                         array.push(new XpcString(value));
@@ -71,13 +70,13 @@ export class XpcArray extends XpcObject {
                         array.push(new XpcUnknown(value));
                         break;
                 }
-                return true
+                return true;
             }
         })
 
-        XpcArray.xpc_array_apply(xpcArrayPtr, handler)
+        XpcArray.xpc_array_apply(xpcArrayPtr, handler);
 
-        return array
+        return array;
     }
 
     getRawData(): XpcObject[] {
@@ -86,18 +85,18 @@ export class XpcArray extends XpcObject {
 
     public formatArray(depth: number): string {
         let str: string = "[\n"
-        const array = this.getRawData()
+        const array: XpcObject[] = this.getRawData()
         const indent: string = "\t"
-        array.forEach(function (obj, index) {
-            str += `${indent.repeat(depth)}: ${obj.getType()} = `
-            if (obj instanceof XpcDictionary) str += obj.formatDictionary(depth + 1)
-            else if (obj instanceof  XpcData) str += obj.formatData(depth + 1)
-            else if (obj instanceof XpcArray) str += obj.formatArray(depth + 1)
-            else str += `${array[index].toString()}`
-            if (index < array.length) str += ","
-            str += "\n"
+        array.forEach(function (obj: XpcObject, index: number): void {
+            str += `${indent.repeat(depth)}: ${obj.getType()} = `;
+            if (obj instanceof XpcDictionary) str += obj.formatDictionary(depth + 1);
+            else if (obj instanceof  XpcData) str += obj.formatData(depth + 1);
+            else if (obj instanceof XpcArray) str += obj.formatArray(depth + 1);
+            else str += `${array[index].toString()}`;
+            if (index < array.length) str += ",";
+            str += "\n";
         })
-        str += `${indent.repeat(depth - 1)}]`
-        return str
+        str += `${indent.repeat(depth - 1)}]`;
+        return str;
     }
 }

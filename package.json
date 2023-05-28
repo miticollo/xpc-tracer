@@ -1,6 +1,6 @@
 {
-  "name": "scrivisc",
-  "version": "0.0.1",
+  "name": "xpctracer-agent",
+  "version": "1.0.0",
   "description": "A sniffer for XPC message.",
   "private": true,
   "main": "agent/index.ts",
@@ -10,9 +10,9 @@
     "watch": "frida-compile agent/index.ts -o _agent.js -w"
   },
   "dependencies": {
-    "@types/frida-gum": "^18.0.0",
-    "@types/node": "^17.0.25",
-    "frida-compile": "^10.2.5",
-    "frida-fs": "3.0.2"
+    "@types/frida-gum": "^18.3.1",
+    "@types/node": "^18.14.0",
+    "frida-compile": "^16.1.8",
+    "frida-fs": "^5.2.3"
   }
 }

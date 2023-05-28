@@ -1,4 +1,4 @@
-import {XpcObject} from "../xpcObject";
+import {XpcObject} from "../xpcObject.js";
 
 export class XpcMachSend extends XpcObject {
     getRawData(): Object {

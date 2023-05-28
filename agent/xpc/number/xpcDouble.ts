@@ -1,13 +1,12 @@
-import {XpcObject} from "../xpcObject";
+import {XpcObject} from "../xpcObject.js";
 
 export class XpcDouble extends XpcObject {
     public static readonly xpc_double_get_value = new NativeFunction(
-        Module.getExportByName(null, "xpc_double_get_value"),
-        "double", ["pointer"]
+        Module.getExportByName(null, "xpc_double_get_value"), "double", ["pointer"]
     )
 
     public getRawData(): number {
-        return XpcDouble.xpc_double_get_value(this.pointer)
+        return XpcDouble.xpc_double_get_value(this.pointer);
     }
 
     toString(): string {

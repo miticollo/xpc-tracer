@@ -1,9 +1,8 @@
-import {XpcObject} from "../xpcObject";
+import {XpcObject} from "../xpcObject.js";
 
 export class XpcFd extends XpcObject {
     public static readonly xpc_fd_dup = new NativeFunction(
-        Module.getExportByName(null, "xpc_fd_dup"),
-        "int", ["pointer"]
+        Module.getExportByName(null, "xpc_fd_dup"), "int", ["pointer"]
     )
 
     getRawData(): number {

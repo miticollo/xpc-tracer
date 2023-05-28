@@ -1,9 +1,8 @@
-import {XpcObject} from "../xpcObject";
+import {XpcObject} from "../xpcObject.js";
 
 export class XpcBool extends XpcObject {
     public static readonly xpc_bool_get_value = new NativeFunction(
-        Module.getExportByName(null, "xpc_bool_get_value"),
-        "bool", ["pointer"]
+        Module.getExportByName(null, "xpc_bool_get_value"), "bool", ["pointer"]
     )
 
     public getRawData(): boolean {

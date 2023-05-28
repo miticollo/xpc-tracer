@@ -1,14 +1,12 @@
-import {XpcInt64} from "./number/XpcInt64";
+import {XpcInt64} from "./number/XpcInt64.js";
 
 export abstract class XpcObject {
     public static readonly xpc_strerror = new NativeFunction(
-        Module.getExportByName(null, "xpc_strerror"),
-        "pointer", ["int64"]
+        Module.getExportByName(null, "xpc_strerror"), "pointer", ["int64"]
     )
 
     public static readonly xpc_copy_description = new NativeFunction(
-        Module.getExportByName(null, "xpc_copy_description"),
-        "pointer", ["pointer"]
+        Module.getExportByName(null, "xpc_copy_description"), "pointer", ["pointer"]
     )
 
     constructor(protected pointer: NativePointer) {}
